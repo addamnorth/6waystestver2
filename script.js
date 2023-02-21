@@ -5,17 +5,28 @@ let player1Score = 0;
 let player2Score = 0;
 let playerTurn = 1;
 
-options.forEach(option => {
-  option.addEventListener("click", function() {
-    if (playerTurn === 1) {
-      const player1Choice = option.id;
-      option.classList.add("selected");
-      playerTurn = 2;
-      message.textContent = "Player 2's turn";
-    } else {
-      const player2Choice = option.id;
-      option.classList.add("selected");
-      checkResult(player1Choice, player2Choice);
+let options = document.querySelectorAll('.option');
+
+options.forEach((option) => {
+  option.addEventListener('click', () => {
+    chooseOption(option.getAttribute('data-option'));
+  });
+});
+
+function chooseOption(option) {
+  if (!isGameOver) {
+    playerChoice = option;
+    computerChoice = getComputerChoice();
+    let result = getResult(playerChoice, computerChoice);
+    updateScore(result);
+    updateGameMessage(playerChoice, computerChoice, result);
+    if (playerScore === 3 || computerScore === 3) {
+      isGameOver = true;
+      showRestartButton();
+    }
+  }
+}
+
     }
   });
 });
